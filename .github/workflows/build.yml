@@ -15,16 +15,14 @@ jobs:
         run: |
           brew install ldid make git
 
-      - name: Setup Theos
+      - name: Clone Theos
         run: |
           git clone https://github.com/theos/theos.git $HOME/theos || true
 
-      - name: Clone Theos SDKs
+      - name: Initialize Theos (FIX DEFINITIVO)
         run: |
-          mkdir -p "$HOME/theos"
-          if [ ! -d "$HOME/theos/sdks" ]; then
-            git clone https://github.com/theos/sdks.git "$HOME/theos/sdks"
-          fi
+          export THEOS=$HOME/theos
+          $THEOS/bin/update-theos
 
       - name: Build tweak
         run: |
