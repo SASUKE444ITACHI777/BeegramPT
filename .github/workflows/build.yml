@@ -25,7 +25,9 @@ jobs:
 
     - name: Install iOS SDK
       run: |
-        git clone https://github.com/theos/sdks.git $HOME/theos/sdks
+        if [ ! -d "$HOME/theos/sdks" ]; then
+  git clone https://github.com/theos/sdks.git $HOME/theos/sdks
+fi
 
     - name: Build dylib
       run: |
