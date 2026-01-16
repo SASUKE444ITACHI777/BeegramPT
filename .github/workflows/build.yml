@@ -1,0 +1,42 @@
+name: Build BeegramPT dylib
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        brew install ldid make
+
+    - name: Install Theos
+      run: |
+        git clone https://github.com/theos/theos.git $HOME/theos
+        echo "THEOS=$HOME/theos" >> $GITHUB_ENV
+
+    - name: Setup SDK
+      run: |
+        mkdir -p $HOME/theos/sdks
+        curl -L -o iPhoneOS14.5.sdk.tar.xz https://github.com/theos/sdks/releases/download/iPhoneOS14.5/iPhoneOS14.5.sdk.tar.xz
+        tar -xf iPhoneOS14.5.sdk.tar.xz -C $HOME/theos/sdks
+
+    - name: Build dylib
+      run: |
+        export THEOS=$HOME/theos
+        make package FINALPACKAGE=1
+
+    - name: Upload dylib
+      uses: actions/upload-artifact@v4
+      with:
+        name: BeegramPT-dylib
+        path: |
+          .theos/obj/debug/*.dylib
+          .theos/obj/release/*.dylib
