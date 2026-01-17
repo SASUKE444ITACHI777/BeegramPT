@@ -15,18 +15,20 @@ jobs:
         run: |
           brew install ldid make git
 
-      - name: Clone Theos
+      - name: Clone Theos (clean)
         run: |
-          git clone https://github.com/theos/theos.git $HOME/theos
+          rm -rf "$HOME/theos"
+          git clone https://github.com/theos/theos.git "$HOME/theos"
 
-      - name: Clone iOS SDKs (FIX DEFINITIVO)
+      - name: Clone iOS SDKs (clean)
         run: |
-          git clone https://github.com/theos/sdks.git $HOME/theos/sdks
+          rm -rf "$HOME/theos/sdks"
+          git clone https://github.com/theos/sdks.git "$HOME/theos/sdks"
 
       - name: Build tweak
         run: |
-          export THEOS=$HOME/theos
-          export THEOS_SDKS_PATH=$HOME/theos/sdks
+          export THEOS="$HOME/theos"
+          export THEOS_SDKS_PATH="$HOME/theos/sdks"
           make clean
           make
 
