@@ -17,16 +17,16 @@ jobs:
 
       - name: Clone Theos
         run: |
-          git clone https://github.com/theos/theos.git $HOME/theos || true
+          git clone https://github.com/theos/theos.git $HOME/theos
 
-      - name: Initialize Theos (FIX DEFINITIVO)
+      - name: Clone iOS SDKs (FIX DEFINITIVO)
         run: |
-          export THEOS=$HOME/theos
-          $THEOS/bin/update-theos
+          git clone https://github.com/theos/sdks.git $HOME/theos/sdks
 
       - name: Build tweak
         run: |
           export THEOS=$HOME/theos
+          export THEOS_SDKS_PATH=$HOME/theos/sdks
           make clean
           make
 
