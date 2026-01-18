@@ -34,13 +34,18 @@ jobs:
           make clean
           make
 
-      - name: Verify dylib exists
+      - name: Debug Theos output (LISTAR ARQUIVOS GERADOS)
         run: |
-          echo "Listing generated dylibs:"
-          find .theos -name "BeegramPT.dylib" || true
+          echo "===== LISTANDO CONTEÚDO DE .theos ====="
+          if [ -d ".theos" ]; then
+            find .theos -type f
+          else
+            echo ".theos não existe"
+          fi
 
-      - name: Upload dylib artifact
+      - name: Upload dylib artifact (PEGAR QUALQUER DYLIB)
         uses: actions/upload-artifact@v4
         with:
           name: BeegramPT-dylib
-          path: .theos/**/BeegramPT.dylib
+          path: |
+            .theos/**/*.dylib
