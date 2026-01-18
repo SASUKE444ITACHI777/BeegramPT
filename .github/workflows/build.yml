@@ -15,12 +15,14 @@ jobs:
         run: |
           brew install ldid make git
 
-      - name: Clone Theos (clean)
+      - name: Clone Theos (with submodules FIX)
         run: |
           rm -rf "$HOME/theos"
           git clone https://github.com/theos/theos.git "$HOME/theos"
+          cd "$HOME/theos"
+          git submodule update --init --recursive
 
-      - name: Clone iOS SDKs (clean)
+      - name: Clone iOS SDKs
         run: |
           rm -rf "$HOME/theos/sdks"
           git clone https://github.com/theos/sdks.git "$HOME/theos/sdks"
