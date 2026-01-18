@@ -15,7 +15,7 @@ jobs:
         run: |
           brew install ldid make git
 
-      - name: Clone Theos (with submodules FIX)
+      - name: Clone Theos (with submodules)
         run: |
           rm -rf "$HOME/theos"
           git clone https://github.com/theos/theos.git "$HOME/theos"
@@ -34,8 +34,13 @@ jobs:
           make clean
           make
 
-      - name: Upload dylib
+      - name: Verify dylib exists
+        run: |
+          echo "Listing generated dylibs:"
+          find .theos -name "BeegramPT.dylib" || true
+
+      - name: Upload dylib artifact
         uses: actions/upload-artifact@v4
         with:
           name: BeegramPT-dylib
-          path: .theos/obj/iphoneos/arm64/BeegramPT.dylib
+          path: .theos/**/BeegramPT.dylib
